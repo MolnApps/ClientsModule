@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
+use Modules\Clients\Entities\Client;
+use Modules\CustomFields\Entities\CustomField;
+
 class ClientsController extends Controller
 {
     /**
@@ -14,7 +17,23 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        return view('clients::index');
+        $clients = json_encode(Client::all()->map(function($client){
+            return $client->toVue();
+        }));
+
+        $countries = json_encode([
+            ['code' => 'it', 'name' =>'Italy'], 
+            ['code' => 'ru', 'name' => 'Russia'], 
+            ['code' => 'sw', 'name' => 'Sweeden']
+        ]);
+
+        $allCustomFields = json_encode(CustomField::all()->toArray());
+
+        return view('clients::list', [
+            'clients' => $clients,
+            'countries' => $countries,
+            'allCustomFields' => $allCustomFields,
+        ]);
     }
 
     /**
