@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('core::layouts.master')
 
 @section('content')
 <h2 class="Title">Clients</h2>
